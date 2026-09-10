@@ -13,6 +13,7 @@ import {
 
 export default function BuyPropertiesScreen() {
   const [searchText, setSearchText] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('All');
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -68,29 +69,46 @@ onChangeText={setSearchText}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.filterRow}
           >
-            <Pressable style={styles.filterActive}>
-              <Text style={styles.filterActiveText}>All</Text>
-            </Pressable>
+            <Pressable
+  style={styles.filterActive}
+  onPress={() => setSelectedFilter('All')}
+>
+  <Text style={styles.filterActiveText}>All</Text>
+</Pressable>
 
-            <Pressable style={styles.filterButton}>
-              <Text style={styles.filterText}>Sites</Text>
-            </Pressable>
+            <Pressable
+  style={styles.filterButton}
+  onPress={() => setSelectedFilter('Sites')}
+>
+    <Text style={styles.filterText}>Sites</Text>
+</Pressable>
+            <Pressable
+  style={styles.filterButton}
+  onPress={() => setSelectedFilter('Lands')}
+>
+  <Text style={styles.filterText}>Lands</Text>
+</Pressable>
 
-            <Pressable style={styles.filterButton}>
-              <Text style={styles.filterText}>Lands</Text>
-            </Pressable>
+            <Pressable
+  style={styles.filterButton}
+  onPress={() => setSelectedFilter('Apartments')}
+>
+  <Text style={styles.filterText}>Apartments</Text>
+</Pressable>
 
-            <Pressable style={styles.filterButton}>
-              <Text style={styles.filterText}>Apartments</Text>
-            </Pressable>
+            <Pressable
+  style={styles.filterButton}
+  onPress={() => setSelectedFilter('Villas')}
+>
+  <Text style={styles.filterText}>Villas</Text>
+</Pressable>
 
-            <Pressable style={styles.filterButton}>
-              <Text style={styles.filterText}>Villas</Text>
-            </Pressable>
-
-            <Pressable style={styles.filterButton}>
-              <Text style={styles.filterText}>Commercial</Text>
-            </Pressable>
+            <Pressable
+  style={styles.filterButton}
+  onPress={() => setSelectedFilter('Commercial')}
+>
+  <Text style={styles.filterText}>Commercial</Text>
+</Pressable>
           </ScrollView>
         </View>
 
@@ -109,7 +127,8 @@ onChangeText={setSearchText}
         </View>
 
         {/* Property Card 1 */}
-        <Pressable style={styles.propertyCard}>
+{(selectedFilter === 'All' || selectedFilter === 'Sites') && (
+  <Pressable style={styles.propertyCard}>
           <View style={styles.imagePlaceholder}>
             <Text style={styles.imageIcon}>⌂</Text>
             <Text style={styles.imageText}>PROPERTY PHOTO</Text>
@@ -150,7 +169,7 @@ onChangeText={setSearchText}
             </View>
           </View>
         </Pressable>
-
+)}
         {/* Property Card 2 */}
         <Pressable style={styles.propertyCard}>
           <View style={styles.imagePlaceholder}>
