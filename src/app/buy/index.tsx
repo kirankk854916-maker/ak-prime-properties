@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import {
     Pressable,
     SafeAreaView,
@@ -11,6 +12,8 @@ import {
 } from 'react-native';
 
 export default function BuyPropertiesScreen() {
+  const [searchText, setSearchText] = useState('');
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" />
@@ -50,6 +53,8 @@ export default function BuyPropertiesScreen() {
           <TextInput
             placeholder="Search by location or property"
             placeholderTextColor="#8A8F98"
+            value={searchText}
+onChangeText={setSearchText}
             style={styles.searchInput}
           />
         </View>
