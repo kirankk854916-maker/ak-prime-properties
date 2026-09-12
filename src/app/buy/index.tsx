@@ -2,18 +2,56 @@ import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
+
+const properties = [
+  {
+    id: 1,
+    title: 'Premium Residential Site',
+    location: 'Sarjapur, Bangalore',
+    type: 'Sites',
+    area: '1,200 Sq. Ft.',
+    price: '₹ 75 Lakhs',
+  },
+  {
+    id: 2,
+    title: 'Residential Villa',
+    location: 'Attibele, Bangalore',
+    type: 'Villas',
+    area: '2,400 Sq. Ft.',
+    price: '₹ 1.35 Crore',
+  },
+  {
+    id: 3,
+    title: 'Agricultural Land',
+    location: 'Anekal, Bangalore',
+    type: 'Lands',
+    area: '2 Acres',
+    price: '₹ 2.20 Crore',
+  },
+];
 
 export default function BuyPropertiesScreen() {
   const [searchText, setSearchText] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
+
+const filteredProperties = properties.filter((property) => {
+  const matchesSearch =
+    property.title.toLowerCase().includes(searchText.toLowerCase()) ||
+    property.location.toLowerCase().includes(searchText.toLowerCase());
+
+  const matchesFilter =
+    selectedFilter === 'All' || property.type === selectedFilter;
+
+  return matchesSearch && matchesFilter;
+});
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -77,37 +115,87 @@ onChangeText={setSearchText}
 </Pressable>
 
             <Pressable
-  style={styles.filterButton}
+  style={[
+    styles.filterButton,
+    selectedFilter === 'Sites' && styles.filterActive,
+  ]}
   onPress={() => setSelectedFilter('Sites')}
 >
-    <Text style={styles.filterText}>Sites</Text>
+  <Text
+    style={[
+      styles.filterText,
+      selectedFilter === 'Sites' && styles.filterTextActive,
+    ]}
+  >
+    Sites
+  </Text>
 </Pressable>
             <Pressable
-  style={styles.filterButton}
+  style={[
+  styles.filterButton,
+  selectedFilter === 'Lands' && styles.filterActive,
+]}
   onPress={() => setSelectedFilter('Lands')}
 >
-  <Text style={styles.filterText}>Lands</Text>
+  <Text
+  style={[
+    styles.filterText,
+    selectedFilter === 'Lands' && styles.filterTextActive,
+  ]}
+>
+  Lands
+</Text>
 </Pressable>
 
             <Pressable
-  style={styles.filterButton}
+  style={[
+  styles.filterButton,
+  selectedFilter === 'Apartments' && styles.filterActive,
+]}
   onPress={() => setSelectedFilter('Apartments')}
 >
-  <Text style={styles.filterText}>Apartments</Text>
+  <Text
+  style={[
+    styles.filterText,
+    selectedFilter === 'Apartments' && styles.filterActiveText,
+  ]}
+>
+  Apartments
+</Text>
 </Pressable>
 
             <Pressable
-  style={styles.filterButton}
+  style={[
+  styles.filterButton,
+  selectedFilter === 'Villas' && styles.filterActive,
+]}
   onPress={() => setSelectedFilter('Villas')}
 >
-  <Text style={styles.filterText}>Villas</Text>
+  <Text
+  style={[
+    styles.filterText,
+    selectedFilter === 'Villas' && styles.filterActiveText,
+  ]}
+>
+  Villas
+</Text>
 </Pressable>
 
             <Pressable
-  style={styles.filterButton}
+  style={[
+    styles.filterButton,
+    selectedFilter === 'Commercial' && styles.filterActive,
+  ]}
   onPress={() => setSelectedFilter('Commercial')}
 >
-  <Text style={styles.filterText}>Commercial</Text>
+  <Text
+  style={[
+    styles.filterText,
+    selectedFilter === 'Commercial' && styles.filterActiveText,
+  ]}
+>
+  Commercial
+</Text>
 </Pressable>
           </ScrollView>
         </View>
@@ -126,133 +214,55 @@ onChangeText={setSearchText}
           </Pressable>
         </View>
 
-        {/* Property Card 1 */}
-{(selectedFilter === 'All' || selectedFilter === 'Sites') && (
-  <Pressable style={styles.propertyCard}>
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imageIcon}>⌂</Text>
-            <Text style={styles.imageText}>PROPERTY PHOTO</Text>
-          </View>
+{filteredProperties.map((property) => (
+  <Pressable
+    key={property.id}
+    style={styles.propertyCard}
+  >
+    <View style={styles.imagePlaceholder}>
+      <Text style={styles.imageIcon}>⌂</Text>
+      <Text style={styles.imageText}>PROPERTY PHOTO</Text>
+    </View>
 
-          <View style={styles.propertyInfo}>
-            <View style={styles.availableBadge}>
-              <Text style={styles.availableText}>AVAILABLE</Text>
-            </View>
+    <View style={styles.propertyInfo}>
+      <View style={styles.availableBadge}>
+        <Text style={styles.availableText}>AVAILABLE</Text>
+      </View>
 
-            <Text style={styles.propertyTitle}>
-              Premium Residential Site
-            </Text>
+      <Text style={styles.propertyTitle}>
+        {property.title}
+      </Text>
 
-            <Text style={styles.location}>📍 Sarjapur, Bangalore</Text>
+      <Text style={styles.location}>
+        📍 {property.location}
+      </Text>
 
-            <View style={styles.detailsRow}>
-              <View>
-                <Text style={styles.detailLabel}>AREA</Text>
-                <Text style={styles.detailValue}>1,200 Sq.Ft.</Text>
-              </View>
+      <View style={styles.detailsRow}>
+        <View>
+          <Text style={styles.detailLabel}>TYPE</Text>
+          <Text style={styles.detailValue}>{property.type}</Text>
+        </View>
 
-              <View>
-                <Text style={styles.detailLabel}>TYPE</Text>
-                <Text style={styles.detailValue}>Residential Site</Text>
-              </View>
-            </View>
+        <View>
+          <Text style={styles.detailLabel}>AREA</Text>
+          <Text style={styles.detailValue}>{property.area}</Text>
+        </View>
+      </View>
 
-            <View style={styles.priceRow}>
-              <View>
-                <Text style={styles.priceLabel}>PRICE</Text>
-                <Text style={styles.price}>₹ 75 Lakhs</Text>
-              </View>
+      <View style={styles.priceRow}>
+        <View>
+          <Text style={styles.priceLabel}>PRICE</Text>
+          <Text style={styles.price}>{property.price}</Text>
+        </View>
 
-              <View style={styles.viewButton}>
-                <Text style={styles.viewButtonText}>VIEW DETAILS</Text>
-              </View>
-            </View>
-          </View>
-        </Pressable>
-)}
-        {/* Property Card 2 */}
-        <Pressable style={styles.propertyCard}>
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imageIcon}>⌂</Text>
-            <Text style={styles.imageText}>PROPERTY PHOTO</Text>
-          </View>
-
-          <View style={styles.propertyInfo}>
-            <View style={styles.availableBadge}>
-              <Text style={styles.availableText}>AVAILABLE</Text>
-            </View>
-
-            <Text style={styles.propertyTitle}>Residential Villa</Text>
-
-            <Text style={styles.location}>📍 Attibele, Bangalore</Text>
-
-            <View style={styles.detailsRow}>
-              <View>
-                <Text style={styles.detailLabel}>AREA</Text>
-                <Text style={styles.detailValue}>2,400 Sq.Ft.</Text>
-              </View>
-
-              <View>
-                <Text style={styles.detailLabel}>TYPE</Text>
-                <Text style={styles.detailValue}>Villa</Text>
-              </View>
-            </View>
-
-            <View style={styles.priceRow}>
-              <View>
-                <Text style={styles.priceLabel}>PRICE</Text>
-                <Text style={styles.price}>₹ 1.35 Crore</Text>
-              </View>
-
-              <View style={styles.viewButton}>
-                <Text style={styles.viewButtonText}>VIEW DETAILS</Text>
-              </View>
-            </View>
-          </View>
-        </Pressable>
-
-        {/* Property Card 3 */}
-        <Pressable style={styles.propertyCard}>
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imageIcon}>⌂</Text>
-            <Text style={styles.imageText}>PROPERTY PHOTO</Text>
-          </View>
-
-          <View style={styles.propertyInfo}>
-            <View style={styles.availableBadge}>
-              <Text style={styles.availableText}>AVAILABLE</Text>
-            </View>
-
-            <Text style={styles.propertyTitle}>Agricultural Land</Text>
-
-            <Text style={styles.location}>📍 Anekal, Bangalore</Text>
-
-            <View style={styles.detailsRow}>
-              <View>
-                <Text style={styles.detailLabel}>AREA</Text>
-                <Text style={styles.detailValue}>2 Acres</Text>
-              </View>
-
-              <View>
-                <Text style={styles.detailLabel}>TYPE</Text>
-                <Text style={styles.detailValue}>Land</Text>
-              </View>
-            </View>
-
-            <View style={styles.priceRow}>
-              <View>
-                <Text style={styles.priceLabel}>PRICE</Text>
-                <Text style={styles.price}>₹ 2.20 Crore</Text>
-              </View>
-
-              <View style={styles.viewButton}>
-                <Text style={styles.viewButtonText}>VIEW DETAILS</Text>
-              </View>
-            </View>
-          </View>
-        </Pressable>
-
-        {/* Note */}
+        <View style={styles.viewButton}>
+          <Text style={styles.viewButtonText}>VIEW DETAILS</Text>
+        </View>
+      </View>
+    </View>
+  </Pressable>
+))}
+               {/* Note */}
         <View style={styles.noteCard}>
           <Text style={styles.noteTitle}>Looking for something specific?</Text>
           <Text style={styles.noteText}>
@@ -415,6 +425,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 22,
   },
+
+filterTextActive: {
+  color: '#FFFFFF',
+},
 
   filterActiveText: {
     color: '#D4AF37',
