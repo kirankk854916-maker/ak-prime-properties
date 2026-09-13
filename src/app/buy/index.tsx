@@ -216,9 +216,15 @@ onChangeText={setSearchText}
 
 {filteredProperties.map((property) => (
   <Pressable
-    key={property.id}
-    style={styles.propertyCard}
-  >
+  key={property.id}
+  style={styles.propertyCard}
+  onPress={() =>
+    router.push({
+      pathname: '/properties/[id]',
+      params: { id: String(property.id) },
+    })
+  }
+>
     <View style={styles.imagePlaceholder}>
       <Text style={styles.imageIcon}>⌂</Text>
       <Text style={styles.imageText}>PROPERTY PHOTO</Text>
