@@ -1,5 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import {
+    Linking,
     Pressable,
     SafeAreaView,
     ScrollView,
@@ -98,6 +99,39 @@ export default function PropertyDetailsScreen() {
           </Text>
 
           <Text style={styles.price}>{property.price}</Text>
+
+          <View style={styles.contactButtons}>
+  <Pressable
+  style={styles.callButton}
+  onPress={() => {
+    window.location.href = 'tel:+919999999999';
+  }}
+>
+  <Text style={styles.callButtonText}>📞 Call</Text>
+</Pressable>
+
+  <Pressable
+  style={styles.whatsappButton}
+  onPress={() => {
+    const message = `Hello AK PRIME PROPERTIES,
+
+I am interested in this property:
+
+Property: ${property.title}
+Location: ${property.location}
+Price: ${property.price}
+Area: ${property.area}
+
+Please provide more details.`;
+
+    Linking.openURL(
+      `https://wa.me/?text=${encodeURIComponent(message)}`
+    );
+  }}
+>
+  <Text style={styles.whatsappButtonText}>💬 WhatsApp</Text>
+</Pressable>
+</View>
 
           <View style={styles.divider} />
 
@@ -392,4 +426,38 @@ const styles = StyleSheet.create({
     color: '#D4AF37',
     fontWeight: '800',
   },
+contactButtons: {
+  flexDirection: 'row',
+  gap: 12,
+  marginTop: 20,
+  marginBottom: 10,
+},
+
+callButton: {
+  flex: 1,
+  backgroundColor: '#061A33',
+  paddingVertical: 14,
+  borderRadius: 8,
+  alignItems: 'center',
+},
+
+callButtonText: {
+  color: '#FFFFFF',
+  fontWeight: '800',
+  fontSize: 15,
+},
+
+whatsappButton: {
+  flex: 1,
+  backgroundColor: '#25D366',
+  paddingVertical: 14,
+  borderRadius: 8,
+  alignItems: 'center',
+},
+
+whatsappButtonText: {
+  color: '#FFFFFF',
+  fontWeight: '800',
+  fontSize: 15,
+},
 });
